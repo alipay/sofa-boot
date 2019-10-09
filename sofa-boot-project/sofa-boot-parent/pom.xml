@@ -5,7 +5,7 @@
     <parent>
         <artifactId>sofaboot-dependencies</artifactId>
         <groupId>com.alipay.sofa</groupId>
-        <version>3.2.1-SNAPSHOT</version>
+        <version>3.3.0-SNAPSHOT</version>
         <relativePath>../sofaboot-dependencies</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -17,6 +17,7 @@
         <main.user.dir>${basedir}/../..</main.user.dir>
         <project.encoding>UTF-8</project.encoding>
         <java.version>1.8</java.version>
+        <ajdk.native.api.version>8.6.11-0-0</ajdk.native.api.version>
 
         <sofa.version.maven.plugin>1.0.1</sofa.version.maven.plugin>
         <license.maven.plugin>3.0</license.maven.plugin>
@@ -58,6 +59,13 @@
                 <artifactId>javax.servlet-api</artifactId>
                 <version>${javax.servlet.version}</version>
                 <scope>provided</scope>
+            </dependency>
+
+            <!-- svm静态编译ajdk依赖 -->
+            <dependency>
+                <groupId>com.alibaba.ajdk</groupId>
+                <artifactId>ajdk-native-api</artifactId>
+                <version>${ajdk.native.api.version}</version>
             </dependency>
 
             <!--Test-->
@@ -198,6 +206,11 @@
                     <encoding>${project.encoding}</encoding>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <!-- 静态编译ajdk javac检查参数 -->
+                    <!--<compilerArgs>-->
+                    <!--    <arg>-sc</arg>-->
+                    <!--    <arg>-se</arg>-->
+                    <!--</compilerArgs>-->
                 </configuration>
             </plugin>
 
