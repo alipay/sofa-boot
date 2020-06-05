@@ -18,6 +18,7 @@ package com.alipay.sofa.boot.autoconfigure.rpc;
 
 import com.alipay.sofa.healthcheck.startup.ReadinessCheckCallback;
 import com.alipay.sofa.rpc.boot.config.ConsulConfigurator;
+import com.alipay.sofa.rpc.boot.config.ExtensionProperties;
 import com.alipay.sofa.rpc.boot.config.FaultToleranceConfigurator;
 import com.alipay.sofa.rpc.boot.config.LocalFileConfigurator;
 import com.alipay.sofa.rpc.boot.config.MeshConfigurator;
@@ -35,6 +36,8 @@ import com.alipay.sofa.rpc.boot.container.ServerConfigContainer;
 import com.alipay.sofa.rpc.boot.context.ApplicationContextClosedListener;
 import com.alipay.sofa.rpc.boot.context.ApplicationContextRefreshedListener;
 import com.alipay.sofa.rpc.boot.context.SofaBootRpcStartListener;
+import com.alipay.sofa.rpc.boot.ext.ExtensionConfigProcessor;
+import com.alipay.sofa.rpc.boot.ext.RpcExtensionBeanPostProcessor;
 import com.alipay.sofa.rpc.boot.health.RpcAfterHealthCheckCallback;
 import com.alipay.sofa.rpc.boot.runtime.adapter.helper.ConsumerConfigHelper;
 import com.alipay.sofa.rpc.boot.runtime.adapter.helper.ProviderConfigHelper;
@@ -70,7 +73,7 @@ import java.util.Map;
  * @author <a href="mailto:lw111072@antfin.com">LiWei</a>
  */
 @Configuration
-@EnableConfigurationProperties(SofaBootRpcProperties.class)
+@EnableConfigurationProperties({ SofaBootRpcProperties.class, ExtensionProperties.class })
 @ConditionalOnClass(SofaBootRpcProperties.class)
 public class SofaRpcAutoConfiguration {
     @Bean
@@ -268,5 +271,17 @@ public class SofaRpcAutoConfiguration {
     @ConditionalOnProperty(name = "com.alipay.sofa.rpc.dynamic-config")
     public DynamicConfigProcessor dynamicConfigProcessor() {
         return new DynamicConfigProcessor();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public RpcExtensionBeanPostProcessor rpcExtensionBeanPostProcessor() {
+        return new RpcExtensionBeanPostProcessor();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public ExtensionConfigProcessor extensionConfigProcessor() {
+        return new ExtensionConfigProcessor();
     }
 }
